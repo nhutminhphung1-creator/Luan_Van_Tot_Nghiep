@@ -6,3 +6,4 @@ gps/gpx/*.csv
 *.pth
 *.mp4
 .DS_Store
+checkpoints/best_model.pt
