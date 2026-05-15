@@ -1,26 +1,25 @@
-# Đề tài 2: Dữ liệu tọa độ GPS (Chuỗi thời gian) và Hình ảnh tuyến đường (Không gian)
+# 🚗 Nghiên cứu Mô hình Kết hợp Dữ liệu Tọa độ GPS và Hình ảnh Tuyến đường
 
 > **Luận văn Tốt nghiệp**
 >**Mã số sinh viên:** 2251120429  
 >**Tên:** Phùng Văn Nhựt Minh
 > Khoa Công nghệ Thông tin — Trường Đại học GTVT TP. Hồ Chí Minh  
 > Năm 2026
-
 ---
 
 ## 📋 Mục lục
 
-- [Giới thiệu]
-- [Kết quả đạt được]
-- [Kiến trúc mô hình]
-- [Cấu trúc thư mục]
-- [Cài đặt môi trường]
-- [Hướng dẫn chạy từng bước]
+- [Giới thiệu](#giới-thiệu)
+- [Kết quả đạt được](#kết-quả-đạt-được)
+- [Kiến trúc mô hình](#kiến-trúc-mô-hình)
+- [Cấu trúc thư mục](#cấu-trúc-thư-mục)
+- [Cài đặt môi trường](#cài-đặt-môi-trường)
+- [Hướng dẫn chạy từng bước](#hướng-dẫn-chạy-từng-bước)
 - [Bộ dữ liệu](#bộ-dữ-liệu)
-- [Kết quả thực nghiệm]
-- [Explainability]
-- [Cấu hình Hyperparameter]
-- [Tài liệu tham khảo]
+- [Kết quả thực nghiệm](#kết-quả-thực-nghiệm)
+- [Explainability](#explainability)
+- [Cấu hình Hyperparameter](#cấu-hình-hyperparameter)
+- [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ---
 
@@ -28,10 +27,10 @@
 
 Đề tài xây dựng hệ thống **phát hiện hành trình bất thường** bằng cách kết hợp hai nguồn dữ liệu:
 
-| Nguồn                 | Định dạng     | Vai trò                           |
-|-----------------------|---------------|-----------------------------------|
-| GPS chuỗi thời gian   | CSV (1Hz)     | Quỹ đạo, vận tốc, hướng di chuyển |
-| Camera hành trình     | MP4 → JPEG    | Ngữ cảnh môi trường đường         |
+| Nguồn | Định dạng | Vai trò |
+|-------|-----------|---------|
+| GPS chuỗi thời gian | CSV (1Hz) | Quỹ đạo, vận tốc, hướng di chuyển |
+| Camera hành trình | MP4 → JPEG | Ngữ cảnh môi trường đường |
 
 **Vấn đề giải quyết:** Hệ thống GPS thuần túy không phân biệt được giữa tắc đường (bình thường) và dừng đỗ trái phép (bất thường). Kết hợp ảnh giúp mô hình "nhìn" được môi trường để ra quyết định chính xác hơn.
 
@@ -45,19 +44,20 @@
 
 ## Kết quả đạt được
 
-| Metric                    | Giá trị   | Ý nghĩa                                       |
-|---------------------------|-----------|-----------------------------------------------|
-| **Accuracy**              | **97%**   | Tổng thể phân loại đúng                       |
-| **F1 Abnormal**           | **0.91**  | Hiệu suất phát hiện bất thường                |
-| **Recall Abnormal**       | **0.84**  | Phát hiện 59/70 mẫu bất thường                |
-| **Precision Abnormal**    | **0.98**  | 98% cảnh báo là đúng, gần như không báo nhầm  |
-| **Macro F1**              | **0.95**  | Chỉ số tổng hợp cân bằng hai class            |
-| **Mahalanobis AUC**       | **0.992** | GPS Anomaly Score gần hoàn hảo                |
+| Metric | Giá trị | Ý nghĩa |
+|--------|---------|---------|
+| **Accuracy** | **97%** | Tổng thể phân loại đúng |
+| **F1 Abnormal** | **0.91** | Hiệu suất phát hiện bất thường |
+| **Recall Abnormal** | **0.84** | Phát hiện 59/70 mẫu bất thường |
+| **Precision Abnormal** | **0.98** | 98% cảnh báo là đúng, gần như không báo nhầm |
+| **Macro F1** | **0.95** | Chỉ số tổng hợp cân bằng hai class |
+| **Mahalanobis AUC** | **0.992** | GPS Anomaly Score gần hoàn hảo |
 
 ---
 
 ## Kiến trúc mô hình
 
+```
 GPS Triplet [B, 15]          Ảnh 512×512          Ảnh 256×256
       │                           │                     │
       ▼                           └──────────┬──────────┘
@@ -88,15 +88,19 @@ GPS Triplet [B, 15]          Ảnh 512×512          Ảnh 256×256
         └───────────────┬──────────────┘
                         ▼
               Normal(0) / Abnormal(1)
+```
 
 **Hàm mất mát:**
 
+```
 L_total = L_CrossEntropy(weight=[0.57, 4.25]) + 0.5 × L_SupContrastive(τ=0.07)
+```
 
 ---
 
 ## Cấu trúc thư mục
 
+```
 LuanVanTotNghiep/
 │
 ├── 📁 gps/gpx/                        ← GPS raw data (CSV, 1Hz)
@@ -164,7 +168,7 @@ LuanVanTotNghiep/
 ├── 🐍 main_explain.py                 ← Chạy toàn bộ Explainability
 ├── 🐍 error_analysis.py               ← Phân tích lỗi chi tiết
 └── 📄 README.md
-├── requirements.txt
+```
 
 ---
 
@@ -172,12 +176,12 @@ LuanVanTotNghiep/
 
 ### Yêu cầu hệ thống
 
-| Thành phần        | Tối thiểu | Khuyến nghị |
-|-------------------|-----------|-------------|
-| Python            | 3.10+     | 3.11        |
-| RAM               | 8 GB      | 16 GB       |
-| VRAM (GPU)        | 6 GB      | 16 GB (T4)  |
-| Dung lượng ổ đĩa  | 10 GB     | 20 GB       |
+| Thành phần | Tối thiểu | Khuyến nghị |
+|-----------|-----------|-------------|
+| Python | 3.10+ | 3.11 |
+| RAM | 8 GB | 16 GB |
+| VRAM (GPU) | 6 GB | 16 GB (T4) |
+| Dung lượng ổ đĩa | 10 GB | 20 GB |
 
 ### Cài đặt
 
@@ -203,10 +207,6 @@ pip install timm pandas gpxpy python-dateutil \
 # 4. Kiểm tra cài đặt
 python -c "import torch; print('CUDA:', torch.cuda.is_available())"
 python -c "import timm; print('timm:', timm.__version__)"
-
-# Hoặc chạy file requirements.txt
-pip install -r requirements.txt
-
 ```
 
 ### Chạy trên Google Colab (khuyến nghị để training)
@@ -235,9 +235,11 @@ drive.mount('/content/drive')
 
 ```bash
 python parse_gps.py
+```
 
 **Output mong đợi:**
 
+```
 Nha_truong2.csv: 1200 rows
    time_readable  lat    lon    speed  bearing
 0  2026-04-16...  10.83  106.68  9.45   45.2
@@ -260,9 +262,11 @@ python extract_frames.py
 
 **Output mong đợi:**
 
+```
 ✅ Saved 1198 frames from IMG_0647Nha_truong2.mp4
 ✅ Saved 1052 frames from IMG_0649Truong_nha2.mp4
 ...
+```
 
 **Chức năng:**
 
@@ -282,14 +286,16 @@ python build_triplets.py
 
 **Output mong đợi:**
 
+```
 ✅ Nha_truong2.csv  →  296 samples  (N=251, A=45)
 ✅ Truong_nha2.csv  →  252 samples  (N=236, A=16)
 ...
 ╔══════════════════════════════════════╗
-║  Tổng samples  : 2857                ║
-║  Normal  (0)   : 2515                ║
-║  Abnormal (1)  : 342                 ║
+║  Tổng samples  : 2857               ║
+║  Normal  (0)   : 2515               ║
+║  Abnormal (1)  : 342                ║
 ╚══════════════════════════════════════╝
+```
 
 **Quy tắc labeling tự động (Semi-supervised):**
 
@@ -309,10 +315,12 @@ python dataset.py
 
 **Output mong đợi:**
 
+```
 GPS shape   : torch.Size([4, 15])
 Img512 shape: torch.Size([4, 3, 3, 512, 512])
 Label shape : torch.Size([4])
 ✅ Dataset OK!
+```
 
 ---
 
@@ -328,6 +336,7 @@ python train.py
 
 **Output mong đợi:**
 
+```
 Device: cuda
 Trainable params: 57,979,062
 Class weights: Normal=0.57, Abnormal=4.25
@@ -344,6 +353,7 @@ Ep 15 | Train loss=0.1787 f1=0.924 | Val loss=0.1093 f1=0.946
   Abnormal       0.98    0.84      0.91       70
   accuracy                         0.97      429
 macro avg        0.98    0.92      0.95      429
+```
 
 ---
 
@@ -355,12 +365,14 @@ python find_threshold.py
 
 **Output mong đợi:**
 
+```
 threshold=0.35 | F1-Abnormal=0.873 | F1-Macro=0.931
 threshold=0.40 | F1-Abnormal=0.886 | F1-Macro=0.938  ← Best
 threshold=0.45 | F1-Abnormal=0.886 | F1-Macro=0.938
 ...
 ✅ Best threshold: 0.40 → F1-Abnormal=0.886
 📊 Saved: pr_curve.png
+```
 
 ---
 
@@ -381,6 +393,7 @@ python main_explain.py
 
 **Output mong đợi:**
 
+```
 ═══ PHẦN A: GradCAM Visualization ═══
   ✅ abnormal_1.png  [ABNORMAL  p=0.963]
   ✅ abnormal_2.png  [NORMAL    p=0.041]  ← False Negative
@@ -391,6 +404,7 @@ python main_explain.py
   Detected Abnormal: 61/70 (87.1%)
   False Alarm      : 18/359 (5.0%)
 📊 Saved: explain_output/mahalanobis_analysis.png
+```
 
 ---
 
@@ -398,19 +412,19 @@ python main_explain.py
 
 ### Thống kê tổng quan
 
-| Chuyến đi             | Ngày  | Loại                          | Samples   | Normal          | Abnormal        |
-|-----------------------|------ |-------------------------------|-----------|-----------------|-----------------|
-| Nha_truong2           | 16/04 | Đến trường                    | 296       | 251             | 45              |
-| Truong_nha2           | 16/04 | Về nhà                        | 252       | 236             | 16              |
-| Nha_truong3           | 17/04 | Đến trường                    | 304       | 275             | 29              |
-| Truong_nha3           | 17/04 | Về nhà                        | 278       | 247             | 31              |
-| Nha_truong4           | 17/04 | Đến trường                    | 270       | 235             | 35              |
-| Truong_nha4           | 17/04 | Về nhà                        | 271       | 233             | 38              |
-| Nha_truong5           | 17/04 | Đến trường                    | 286       | 250             | 36              |
-| Truong_nha5           | 17/04 | Về nhà                        | 284       | 263             | 21              |
-| Nha_truong_loivong    | 22/04 | **Lối vòng (Abnormal)**       | 267       | 245             | 22              |
-| Truong_nha_loivihe    | 22/04 | **Lối vi phạm (Abnormal)**    | 349       | 280             | 69              |
-| **TỔNG**              |       |                               | **2.857** | **2.515 (88%)** | **342 (12%)**   |
+| Chuyến đi | Ngày | Loại | Samples | Normal | Abnormal |
+|-----------|------|------|---------|--------|----------|
+| Nha_truong2 | 16/04 | Đến trường | 296 | 251 | 45 |
+| Truong_nha2 | 16/04 | Về nhà | 252 | 236 | 16 |
+| Nha_truong3 | 17/04 | Đến trường | 304 | 275 | 29 |
+| Truong_nha3 | 17/04 | Về nhà | 278 | 247 | 31 |
+| Nha_truong4 | 17/04 | Đến trường | 270 | 235 | 35 |
+| Truong_nha4 | 17/04 | Về nhà | 271 | 233 | 38 |
+| Nha_truong5 | 17/04 | Đến trường | 286 | 250 | 36 |
+| Truong_nha5 | 17/04 | Về nhà | 284 | 263 | 21 |
+| Nha_truong_loivong | 22/04 | **Lối vòng (Abnormal)** | 267 | 245 | 22 |
+| Truong_nha_loivihe | 22/04 | **Lối vi phạm (Abnormal)** | 349 | 280 | 69 |
+| **TỔNG** | | | **2.857** | **2.515 (88%)** | **342 (12%)** |
 
 ### Cấu trúc mỗi Data Point (`samples.json`)
 
@@ -452,12 +466,14 @@ python main_explain.py
 
 ### Vector GPS 15 chiều
 
+```
 GPS_vector = [
   lat_start, lon_start, vel_start, bearing_start,   # P_start (4 chiều)
   lat_mid,   lon_mid,   vel_mid,   bearing_mid,     # P_mid   (4 chiều)
   lat_end,   lon_end,   vel_end,   bearing_end,     # P_end   (4 chiều)
   deviation_ratio, avg_speed, sudden_stop            # Meta    (3 chiều)
 ] ∈ ℝ¹⁵
+```
 
 ---
 
@@ -465,16 +481,17 @@ GPS_vector = [
 
 ### So sánh Ablation Study
 
-| Mô hình                           | Accuracy | F1 Abnormal | Recall Abnormal | Macro F1 |
-|-----------------------------------|----------|-------------|-----------------|----------|
-| GPS Only (1D Transformer)         | 0.88     | 0.45        | 0.31            | 0.66     |
-| Image Only (Swin-Tiny)            | 0.91     | 0.61        | 0.54            | 0.75     |
-| GPS + Image (CE loss only)        | 0.94     | 0.81        | 0.74            | 0.87     |
-| GPS + Image + Contrastive (λ=0.3) | 0.96     | 0.88        | 0.80            | 0.93     |
-| **Full model (λ=0.5, thr=0.40)**  | **0.97** | **0.91**    | **0.84**        | **0.95** |
+| Mô hình | Accuracy | F1 Abnormal | Recall Abnormal | Macro F1 |
+|---------|----------|-------------|-----------------|----------|
+| GPS Only (1D Transformer) | 0.88 | 0.45 | 0.31 | 0.66 |
+| Image Only (Swin-Tiny) | 0.91 | 0.61 | 0.54 | 0.75 |
+| GPS + Image (CE loss only) | 0.94 | 0.81 | 0.74 | 0.87 |
+| GPS + Image + Contrastive (λ=0.3) | 0.96 | 0.88 | 0.80 | 0.93 |
+| **Full model (λ=0.5, thr=0.40)** | **0.97** | **0.91** | **0.84** | **0.95** |
 
 ### Training Curve (30 epochs)
 
+```
 Val F1
 0.95 │                    ★ best (ep15)
 0.94 │              ╭─────╯╲___________
@@ -483,6 +500,7 @@ Val F1
 0.81 │╭╯
      └────────────────────────────────→ Epoch
       1    5   10   15   20   25   30
+```
 
 ---
 
@@ -490,14 +508,15 @@ Val F1
 
 ### GradCAM — Vùng ảnh model chú ý
 
-| Trường hợp         | P(abnormal) | Nhận xét                                                   |
-|--------------------|-------------|------------------------------------------------------------|
-| **ABNORMAL đúng**  | 0.963       | Heatmap highlight mặt đường + lề — xe dừng không rõ lý do  |
-| **NORMAL đúng**    | 0.003       | Heatmap phân bố đều trên làn đường — đi bình thường        |
-| **False Negative** | 0.041       | Model bị "lừa" bởi visual context quen thuộc (cổng trường) |
+| Trường hợp | P(abnormal) | Nhận xét |
+|-----------|-------------|---------|
+| **ABNORMAL đúng** | 0.963 | Heatmap highlight mặt đường + lề — xe dừng không rõ lý do |
+| **NORMAL đúng** | 0.003 | Heatmap phân bố đều trên làn đường — đi bình thường |
+| **False Negative** | 0.041 | Model bị "lừa" bởi visual context quen thuộc (cổng trường) |
 
 ### Mahalanobis GPS Score
 
+```
 Phân phối trên tập test (n=429):
   Normal   (n=359): Score tập trung 0–15 ████████████████▌
   Abnormal (n=70) : Score trải rộng 0–350 ████████████████████████████████
@@ -506,15 +525,16 @@ Phân phối trên tập test (n=429):
   AUC-ROC   = 0.992
   Detected  = 87.1% Abnormal
   FalseAlarm= 5.0%  Normal
+```
 
 ### Chiến lược kết hợp cảnh báo
 
-| Classifier | Mahalanobis | Kết luận                   | Hành động                   |
-|------------|-------------|----------------------------|-----------------------------|
-| Normal     | Thấp ≤13.8  | Bình thường hoàn toàn      | ✅ Không cảnh báo           |
-| Normal     | Cao >13.8   | GPS bất thường, ảnh OK     | ⚠️ Theo dõi                 |
-| Abnormal   | Thấp ≤13.8  | Ảnh bất thường, GPS OK     | ⚠️ Cảnh báo môi trường      |
-| Abnormal   | Cao >13.8   | Bất thường cả hai          | 🔴 Cảnh báo nghiêm trọng    |
+| Classifier | Mahalanobis | Kết luận | Hành động |
+|------------|-------------|---------|-----------|
+| Normal | Thấp ≤13.8 | Bình thường hoàn toàn | ✅ Không cảnh báo |
+| Normal | Cao >13.8 | GPS bất thường, ảnh OK | ⚠️ Theo dõi |
+| Abnormal | Thấp ≤13.8 | Ảnh bất thường, GPS OK | ⚠️ Cảnh báo môi trường |
+| Abnormal | Cao >13.8 | Bất thường cả hai | 🔴 Cảnh báo nghiêm trọng |
 
 ---
 
@@ -560,6 +580,7 @@ CFG = {
 
 ## Tài liệu tham khảo
 
+```
 [1] Z. Liu et al., "Swin Transformer V2: Scaling Up Capacity and Resolution,"
     CVPR 2022, pp. 12009–12019.
 
@@ -584,5 +605,6 @@ CFG = {
     NeurIPS 2020, pp. 18661–18673.
 
 [9] A. Vaswani et al., "Attention Is All You Need," NeurIPS 2017.
+```
 
 ---
