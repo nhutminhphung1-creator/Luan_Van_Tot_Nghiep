@@ -1,0 +1,24 @@
+# Core Deep Learning
+torch
+torchvision
+torchaudio
+timm>=0.9.0
+
+# Data Manipulation & Math
+pandas
+numpy
+scipy
+scikit-learn
+
+# Image & Video Processing
+opencv-python
+Pillow
+
+# GPS & File Handling
+gpxpy
+python-dateutil
+
+# Visualization
+matplotlib
+seaborn
+tqdm
