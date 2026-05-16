@@ -162,14 +162,18 @@ PAIRS = [
     ("gps/gpx/Nha_truong3.csv",   "dataset/frames/Nha_truong3"),
     ("gps/gpx/Nha_truong4.csv",   "dataset/frames/Nha_truong4"),
     ("gps/gpx/Nha_truong5.csv",   "dataset/frames/Nha_truong5"),
+    ("gps/gpx/Nha_truong8.csv",   "dataset/frames/Nha_truong8"),
     # ── Truong nha (đường về nhà) ──
     ("gps/gpx/Truong_nha2.csv",   "dataset/frames/Truong_nha2"),
     ("gps/gpx/Truong_nha3.csv",   "dataset/frames/Truong_nha3"),
     ("gps/gpx/Truong_nha4.csv",   "dataset/frames/Truong_nha4"),
     ("gps/gpx/Truong_nha5.csv",   "dataset/frames/Truong_nha5"),
+    ("gps/gpx/Truong_nha8.csv",   "dataset/frames/Truong_nha8"),
     # ── Lối vòng / Lối vi he (abnormal candidates) ──
     ("gps/gpx/Nha_truong_loivongxp.csv",  "dataset/frames/Nha_truong_loivongxp"),
     ("gps/gpx/Truong_nha_loivihe.csv",  "dataset/frames/Truong_nha_loivihe"),
+    ("gps/gpx/Nha_truong_duongdai.csv",  "dataset/frames/Nha_truong_duongdai"),
+    ("gps/gpx/Truong_nha_hem.csv",  "dataset/frames/Truong_nha_hem"),
 ]
 
 if __name__ == "__main__":

@@ -58,6 +58,11 @@ if __name__ == "__main__":
         ("video/Nha_truong4.mp4",  "gps/gpx/Nha_truong4.csv"),
         ("video/Nha_truong5.mp4",  "gps/gpx/Nha_truong5.csv"),
         ("video/Nha_truong_loivongxp.mp4",  "gps/gpx/Nha_truong_loivongxp.csv"),
+        ("video/Nha_truong8.mp4",  "gps/gpx/Nha_truong8.csv"),
+        ("video/Nha_truong_duongdai.mp4",  "gps/gpx/Nha_truong_duongdai.csv"),
+
+        ("video/Truong_nha8.mp4",  "gps/gpx/Truong_nha8.csv"),
+        ("video/Truong_nha_hem.mp4",  "gps/gpx/Truong_nha_hem.csv"),
 
         ("video/Truong_nha2.mp4",  "gps/gpx/Truong_nha2.csv"),
         ("video/Truong_nha3.mp4",  "gps/gpx/Truong_nha3.csv"),
